@@ -1,7 +1,7 @@
 import json
 import re
 
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse
 from django.views import View
 from django_redis import get_redis_connection
@@ -52,3 +52,60 @@ class RegisterView(View):
             'errno':'0',
             'errmsg':'OK'
         })
+
+class LoginView(View):
+    def post(self,request):
+        json_data=json.loads(request.body.decode())
+        mobile=json_data.get('mobile')
+        password=json_data.get('password')
+
+        if not all([password,mobile]):
+            return JsonResponse({
+                'errno':'4004',
+                'errmsg':'缺少必传参数'
+            })
+        user=authenticate(username=mobile,
+                          password=password)
+
+        if not user:
+            return JsonResponse({
+                'errno':'4002',
+                'errmsg':'用户不存在'
+            })
+        login(request,user)
+
+        request.session.set_expiry(60*60*24*7)
+
+        response = JsonResponse({
+            'errno':'0',
+            'errmsg':'OK'
+        })
+
+        response.set_cookie('username',user.username,max_age=3600*24*7)
+        return response
+    def get(self,request):
+        username=request.COOKIES.get('username')
+        username2 = request.session.get('username')
+        if not username:
+            return JsonResponse({
+                'errno':'4101',
+                'errmsg':'未登录'
+            })
+        return JsonResponse({
+            'errno':'0',
+            'errmsg':'已登录',
+            'data':{
+                'name':username
+            }
+        })
+
+    def delete(self,request):
+        logout(request)
+
+        response=JsonResponse({
+            'errno':'0',
+            'errmsg':'以登出'
+        })
+        response.delete_cookie('username')
+
+        return response

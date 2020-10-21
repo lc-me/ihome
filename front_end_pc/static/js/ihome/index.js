@@ -72,7 +72,7 @@ $(document).ready(function(){
         xhrFields: {withCredentials: true},
         success: function (resp) {
             if (resp.errno == "0"){
-                if (resp.data.user_id && resp.data.name) {
+                if (resp.data.name) {
                     // 已经登录
                     $(".top-bar>.register-login").hide();
                     $(".top-bar>.user-info").show();
