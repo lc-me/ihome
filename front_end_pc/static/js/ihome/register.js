@@ -54,7 +54,7 @@ function sendSMSCode() {
 
     // 通过ajax方式向后端接口发送请求，让后端发送短信验证码
     $.ajax({
-        url: host + "/api/v1.0/sms",
+        url: host + "/api/v1.0/sms/",
         type: "post",
         contentType: "application/json",
         headers: {
