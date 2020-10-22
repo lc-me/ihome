@@ -21,10 +21,11 @@ SECRET_KEY = 'v6&_mnm+qcs%ldxh!4k=*m)+00-s0c8g8kqbj8yn984@#=cqc6'
 DEBUG = True
 AUTH_USER_MODEL = 'users.User'
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'api.ihome.site',
-    'www.ihome.site'
+    # '127.0.0.1',
+    # 'localhost',
+    # 'api.ihome.site',
+    # 'www.ihome.site'
+    '*'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -202,3 +203,7 @@ LOGGING = {
         },
     }
 }
+
+
+# 七牛云
+QINIU_URL= "http://pzjstxvsp.bkt.clouddn.com/"

@@ -38,6 +38,7 @@ $(document).ready(function () {
             type: "post",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
+                // 'content-type':'multipart/form-data'
             },
             xhrFields: {withCredentials: true},
             success: function (resp) {
